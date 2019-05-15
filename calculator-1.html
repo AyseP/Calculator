@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+
+    <title>Calculator-1</title>
+
+    <style>
+        nav,
+        header,
+        footer {
+            display: block;
+            margin: 0;
+            display: 0;
+        }
+
+        body {
+            line-height: 1;
+            margin: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        .number {
+            width: 100%;
+            height: 25px;
+            background-color: beige;
+        }
+
+        .operation {
+            width: 100%;
+            height: 25px;
+            background-color: dimgray;
+        }
+
+        .end {
+            width: 100%;
+            height: 25px;
+            background-color: dimgray;
+        }
+    </style>
+</head>
+
+<body>
+
+    <table>
+        <input type="text" id="calculator-screen" value="" />
+
+        <tr>
+            <td><button class="number">1</button></td>
+            <td><button class="number">2</button></td>
+            <td><button class="number">3</button></td>
+            <td><button class="operation">/</button></td>
+        </tr>
+        <tr>
+            <td><button class="number">4</button></td>
+            <td><button class="number">5</button></td>
+            <td><button class="number">6</button></td>
+            <td><button class="operation">*</button></td>
+        </tr>
+        <tr>
+            <td><button class="number">7</button></td>
+            <td><button class="number">8</button></td>
+            <td><button class="number">9</button></td>
+            <td><button class="operation">+</button></td>
+        </tr>
+        <tr>
+            <td><button class="operation">=</button></td>
+            <td><button class="number">0</button></td>
+            <td><button class="end" value="end">X</button></td>
+            <td><button class="operation">-</button></td>
+        </tr>
+    </table>
+
+    <script>
+        var OPERATOR = '';
+        var VALUE = 0;
+        var total = 0;
+        var typedNumber = 0;
+
+        var keyCode;
+
+
+        // document.body.onkeypress = function (event) {
+        //     if (event.keyCode >= 48 && event.keyCode <= 57) {
+        //         onNumberClicked1(event.key)
+        //     }
+        // }
+
+
+        var numbers = document.querySelectorAll(".number");
+        var inputArea = document.querySelector("#calculator-screen");
+        inputArea.value = 0;
+
+        for (let i = 0; i < numbers.length; i++) {
+            const nmber = numbers[i];
+            nmber.addEventListener("click", onNumberClicked);
+        }
+
+        var operations = document.querySelectorAll(".operation");
+        for (let index = 0; index < operations.length; index++) {
+            const operation = operations[index];
+            operation.addEventListener("click", function (event) {
+                var operator = event.target.innerText;
+                Calculate(operator);
+            })
+        }
+
+        function Calculate(operator) {
+            switch (operator) {
+                case "+":
+                    sum();
+                    break;
+                case "-":
+                    minus();
+                    break;
+                case "*":
+                    multiply();
+                    break;
+                case "/":
+                    divide();
+                    break;
+            }
+            OPERATOR = operator;
+            typedNumber = 0;
+        }
+
+        function sum() {
+            if (OPERATOR === "") {
+                total = typedNumber;
+                inputArea.value = "";
+            } else {
+                total += typedNumber;
+            }
+            print();
+        }
+
+        function minus() {
+            if (OPERATOR === "") {
+                total = typedNumber;
+                inputArea.value = "";
+            } else {
+                total -= typedNumber;
+            }
+            print();
+        }
+
+        function multiply() {
+            if (OPERATOR === "") {
+                total = typedNumber;
+                inputArea.value = "";
+            } else {
+                total *= typedNumber;
+            }
+            print();
+        }
+
+        function divide() {
+            if (OPERATOR === "") {
+                total = typedNumber;
+                inputArea.value = "";
+            } else {
+                total /= typedNumber;
+            }
+            print();
+        }
+
+        function print() {
+            inputArea.value = total;
+        }
+
+        document.querySelector(".end").addEventListener("click", function (event) {
+            // Değerleri sıfırlama yapıyoruz
+            VALUE = 0;
+            OPERATOR = '';
+            inputArea.value = '';
+        });
+
+        function onNumberClicked(event) {
+            typenumber(event.target.innerText)
+        }
+        function typenumber(number) {
+            if (typedNumber === 0) {
+                inputArea.value = number;
+            } else {
+                inputArea.value += number;
+            }
+            typedNumber = parseInt(inputArea.value);
+        }
+
+        // function onNumberClicked1(num) {
+        //     if (typedNumber === 0) {
+        //         inputArea.value = num;
+        //     } else {
+        //         inputArea.value += num;
+        //     }
+        //     typedNumber = parseInt(inputArea.value);
+        // }
+
+        var nums = [
+            {
+                keyCode: 48,
+                number: 0
+            },
+            {
+                keyCode: 49,
+                number: 1
+            },
+            {
+                keyCode: 50,
+                number: 2
+            },
+            {
+                keyCode: 51,
+                number: 3
+            },
+            {
+                keyCode: 52,
+                number: 4
+            },
+            {
+                keyCode: 53,
+                number: 5
+            },
+            {
+                keyCode: 54,
+                number: 6
+            },
+            {
+                keyCode: 55,
+                number: 7
+            },
+            {
+                keyCode: 56,
+                number: 8
+            },
+            {
+                keyCode: 57,
+                number: 9
+            }];
+
+        var opr = [
+            {
+                shiftKey: 13,
+                opera: "=",
+                functions: total
+            },
+            {
+                shiftKey: 43,
+                opera: "+",
+                functions: sum
+
+            },
+            {
+                shiftKey: 45,
+                opera: "-",
+                functions: minus
+            },
+            {
+                shiftKey: 42,
+                opera: "*",
+                functions: multiply
+            },
+            {
+                shiftKey: 47,
+                opera: "/",
+                functions: divide
+
+            }];
+
+
+        document.body.onkeydown = function (event) {
+            if (event.shiftKey) {
+                const operator = opr.find(x => x.operator == event.Key);
+                console.log(operator);
+                if (operator) {
+                    Calculate(operator);
+                }
+                return;
+            }
+
+            // for (let y = 0; y < opr.length; y++) {
+            //     if (event.shiftKey) {
+
+            //         Calculate(opr[y].opera);
+            //         console.log("tıklandı" + opr[y])
+            //         return;
+
+            //     }
+            // }
+
+            // if (event.shiftKey)
+            //     return;
+            for (let x = 0; x < nums.length; x++) {
+                if (event.keyCode == nums[x].keyCode) {
+                    typenumber(nums[x].number)
+                    break;
+                }
+            }
+        }
+
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
